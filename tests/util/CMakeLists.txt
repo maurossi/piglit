@@ -39,6 +39,11 @@ if(PIGLIT_USE_WAFFLE)
 			piglit-framework-gl/piglit_x11_framework.c
 		)
 	endif()
+	if(PIGLIT_HAS_ANDROID)
+		list(APPEND UTIL_GL_SOURCES
+			piglit-framework-gl/piglit_android_framework.c
+		)
+	endif()
 else()
 	list(APPEND UTIL_GL_SOURCES
 		piglit-framework-gl/piglit_glut_framework.c

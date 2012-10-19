@@ -32,6 +32,7 @@
 #include "piglit_winsys_framework.h"
 #include "piglit_wl_framework.h"
 #include "piglit_x11_framework.h"
+#include "piglit_android_framework.h"
 
 struct piglit_winsys_framework*
 piglit_winsys_framework(struct piglit_gl_framework *gl_fw)
@@ -151,6 +152,10 @@ piglit_winsys_framework_factory(const struct piglit_gl_test_config *test_config)
  */
 	case WAFFLE_PLATFORM_WAYLAND:
 		return piglit_wl_framework_create(test_config);
+#ifdef PIGLIT_HAS_ANDROID
+	case WAFFLE_PLATFORM_ANDROID:
+		return piglit_android_framework_create(test_config);
+#endif
 	default:
 		assert(0);
 		return NULL;

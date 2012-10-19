@@ -95,6 +95,17 @@ piglit_wfl_framework_choose_platform(void)
 #endif
 	}
 
+	else if (strcmp(env, "android") == 0) {
+#ifdef PIGLIT_HAS_ANDROID
+		return WAFFLE_PLATFORM_ANDROID;
+#else
+		fprintf(stderr, "environment var PIGLIT_PLATFORM=android, "
+		        "but piglit was built without Android support\n");
+		piglit_report_result(PIGLIT_FAIL);
+#endif
+	}
+
+
 	else {
 		fprintf(stderr, "environment var PIGLIT_PLATFORM has bad "
 			"value \"%s\"\n", env);
