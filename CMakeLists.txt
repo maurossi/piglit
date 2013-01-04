@@ -32,7 +32,7 @@ else()
 endif()
 
 if(PIGLIT_USE_WAFFLE)
-	pkg_check_modules(WAFFLE REQUIRED waffle-1>=1.2.2)
+	find_package(Waffle 1.2.2 REQUIRED)
 
 	if(NOT WAFFLE_FOUND)
 		message(FATAL_ERROR "Failed to find Waffle. If Waffle is not "
@@ -42,8 +42,7 @@ if(PIGLIT_USE_WAFFLE)
         endif()
 
         add_definitions(-DPIGLIT_USE_WAFFLE)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${WAFFLE_CFLAGS}")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WAFFLE_CFLAGS}")
+	include_directories(${WAFFLE_INCLUDE_DIRS})
 else()
 	find_package(GLUT REQUIRED)
 
