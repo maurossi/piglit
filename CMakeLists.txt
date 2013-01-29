@@ -23,6 +23,10 @@ if(PIGLIT_BUILD_GL_TESTS)
 	find_package(OpenGL REQUIRED)
 else()
 	find_package(OpenGL)
+	# OPENGL_INCLUDE_PATH is still referenced even though OpenGL wasn't found
+	if (NOT OPENGL_INCLUDE_PATH)
+		set(OPENGL_INCLUDE_PATH "" CACHE STRING "GL/glext.h directory" FORCE)
+	endif()
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -211,6 +215,7 @@ if (WIN32)
 	add_definitions (-D_USE_MATH_DEFINES)
 endif (WIN32)
 
+
 if (APPLE)
 	find_path(GLEXT_INCLUDE_DIR
 		NAMES OpenGL/glext.h
@@ -219,7 +224,7 @@ if (APPLE)
 	)
 else (APPLE)
 	find_path(GLEXT_INCLUDE_DIR
-		NAMES GL/glext.h
+		NAMES GL/glext.h GLES2/gl2ext.h
 		PATHS ${OPENGL_INCLUDE_DIR}
 		DOC "Include for GL/glext.h"
 	)
