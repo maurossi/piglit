@@ -38,6 +38,26 @@
 
 #include "shader_runner_gles_workarounds.h"
 
+#if defined(__ANDROID__)
+/* on Android there is no strchrnul which is used in this test, so we must fill
+ * in an implementation.
+ *
+ * The strchrnul() function is like strchr() except that if c is not found in s, then
+ * it returns a pointer to the null byte at the end of s, rather than NULL
+ */
+char *
+strchrnul(const char *s, int c)
+{
+	char * result = strchr(s, c);
+
+	if (result == NULL) {
+		result = s + strlen(s);
+	}
+
+	return result;
+}
+#endif /* __ANDROID__ */
+
 static void
 get_required_versions(const char *script_name,
 		      struct piglit_gl_test_config *config);
