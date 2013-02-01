@@ -382,6 +382,7 @@ compare(float ref, float value, enum comparison cmp)
 	}
 
 	assert(!"Should not get here.");
+	return 0;
 }
 
 
@@ -401,6 +402,7 @@ comparison_string(enum comparison cmp)
 	}
 
 	assert(!"Should not get here.");
+	return 0;
 }
 
 
