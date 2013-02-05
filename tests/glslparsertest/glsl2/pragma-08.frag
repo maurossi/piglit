@@ -11,7 +11,7 @@
  *
  * Based on the Regnum Online shader in bugzilla #28138.
  * */
-#version 120
+
 
 #line 336
 #extension GL_ARB_texture_rectangle : enable

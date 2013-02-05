@@ -8,7 +8,7 @@
 // [end config]
 
 /* PASS */
-#version 120
+
 uniform vec2 u1;
 
 void main()

@@ -8,7 +8,7 @@
 // [end config]
 
 /* FAIL - out of bounds access of gl_FragData */
-#version 110
+
 
 uniform vec4 a;
 

@@ -15,7 +15,7 @@
  *     invariance....All uses of invariant must be at the global scope, and
  *     before any use of the variables being declared as invariant."
  */
-#version 120
+
 
 void main() 
 {

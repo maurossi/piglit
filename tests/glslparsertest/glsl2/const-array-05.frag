@@ -8,7 +8,7 @@
 // [end config]
 
 /* PASS */
-#version 120
+
 void main()
 {
    const float a[2] = float[2](0.0, 1.0);

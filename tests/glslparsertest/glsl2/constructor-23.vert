@@ -7,7 +7,7 @@
 // # NOTE: 6cc17ae70b70d150aa1751f8e28db7b2a9bd50f0
 // [end config]
 
-#version 120
+
 uniform mat2 m2;
 varying mat4 m4;
 void main()

@@ -16,7 +16,7 @@
  *    that can be applied to one of the expressions to make their types
  *    match."
  */
-#version 120
+
 
 uniform bool selector;
 uniform vec4 a[2];

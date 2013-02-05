@@ -12,7 +12,7 @@
  * mention of implicit conversions occuring on the expression of a return
  * statement.
  */
-#version 120
+
 
 float function(int i)
 {

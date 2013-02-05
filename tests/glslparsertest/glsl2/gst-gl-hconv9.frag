@@ -35,7 +35,7 @@ uniform float kernel[9];
 
 void main () {
 /* float offset[9] = float[9] (-4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0); */
-/* don't use array constructor so we don't have to depend on #version 120 */
+/* don't use array constructor so we don't have to depend on  */
   float offset[9];
   offset[0] = -4.0;
   offset[1] = -3.0;

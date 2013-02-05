@@ -8,7 +8,7 @@
 // [end config]
 
 /* FAIL - built-in exp hidden by variable */
-#version 120
+
 uniform float exp;
 
 void main()

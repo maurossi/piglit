@@ -8,7 +8,7 @@
 // [end config]
 
 /* PASS */
-#version 120
+
 struct s { float f; };
 
 void main()

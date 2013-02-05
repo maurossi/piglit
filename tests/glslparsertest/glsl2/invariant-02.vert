@@ -14,7 +14,7 @@
  *     "The invariant keyword can be followed by a comma separated list of
  *     previously declared identifiers."
  */
-#version 120
+
 
 invariant gl_Position, gl_FrontColor, gl_BackColor;
 

@@ -27,7 +27,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#version 120
+
 /* The #version was added by anholt in converting to piglit due to the
  * use of the array constructor.
  */

@@ -14,7 +14,7 @@
  *     "Only variables output from a vertex shader can be candidates for
  *     invariance."
  */
-#version 120
+
 
 invariant uniform vec2 x;
 

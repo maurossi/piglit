@@ -8,7 +8,7 @@
 // [end config]
 
 /* FAIL */
-#version 120
+
 void main() {
     float foo(float x) {
         return x + 0.5;

@@ -10,7 +10,7 @@
 /* PASS - GL_ARB_draw_buffers does exist in the vertex shader, but it only
  * makes the built in variable gl_MaxDrawBuffers be available.
  */
-#version 110
+
 
 /* This causes an error on some implementations, but is acceptable on others.
  * The GL_ARB_draw_buffers spec only specifies behavior when #extension is

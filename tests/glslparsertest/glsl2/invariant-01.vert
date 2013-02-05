@@ -8,7 +8,7 @@
 // [end config]
 
 /* PASS - based on examples in the GLSL 1.20 spec */
-#version 120
+
 
 invariant gl_Position;
 

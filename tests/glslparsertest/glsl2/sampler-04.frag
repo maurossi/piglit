@@ -14,7 +14,7 @@
  *    "Samplers cannot be treated as l-values; hence cannot be used as
  *     out or inout function parameters, nor can they be assigned into."
  */
-#version 120
+
 
 uniform sampler2D u[4];
 varying vec2 coord;

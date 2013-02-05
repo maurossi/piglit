@@ -7,7 +7,7 @@
 // # NOTE: 6cc17ae70b70d150aa1751f8e28db7b2a9bd50f0
 // [end config]
 
-#version 120
+
 void main()
 {
    const vec4 t1 = vec4(-1.0, 0.0, -1.0, -1.0);

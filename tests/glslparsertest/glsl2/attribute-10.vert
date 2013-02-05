@@ -7,7 +7,7 @@
 // # NOTE: 6cc17ae70b70d150aa1751f8e28db7b2a9bd50f0
 // [end config]
 
-#version 120
+
 /* FAIL - attribute cannot have array type in GLSL 1.20 */
 attribute vec4 i[10];
 

@@ -7,7 +7,7 @@
 // # NOTE: 6cc17ae70b70d150aa1751f8e28db7b2a9bd50f0
 // [end config]
 
-#version 120
+
 void main()
 {
    const mat3x2 c1 = mat3x2(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
