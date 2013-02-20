@@ -352,6 +352,7 @@ EOF
 
 	    for r in $rows; do
 		expect=$(((i - 1) * (matrix_dim * matrix_dim) + (c - 1) * matrix_dim + r))
+        echo
 		if [ "x$expect_type" = "xfloat" ]; then
 		    echo "uniform int row $((r - 1))"
 		    echo "uniform float expect $expect"
@@ -367,7 +368,6 @@ EOF
 		x=$((x + 5))
 		y=$((y + 5))
 		echo "probe rgb $x $y 0.0 1.0 0.0"
-		echo
 	    done
 	done
     done
