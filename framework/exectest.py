@@ -68,6 +68,17 @@ class ExecTest(Test):
 
 			i = 0
 			while True:
+				if os.environ.has_key("ANDROID_BUILD_TOP") == True and platform.system() == 'Linux':
+					writepath = os.environ['HOME']
+
+					self.scriptfile = open(writepath + "/piglit_" +self.command_name+ "_android.sh", "w")
+					self.scriptfile.write(self.sh_script_remote)
+					self.scriptfile.close()
+
+					self.scriptfile = open(writepath + "/piglit_" +self.command_name+ "_host.sh", "w")
+					self.scriptfile.write(self.sh_script_host)
+					self.scriptfile.close()
+
 				if self.skip_test:
 					out = "PIGLIT: {'result': 'skip'}\n"
 					err = ""
@@ -75,6 +86,10 @@ class ExecTest(Test):
 				else:
 					(out, err, returncode) = \
 						self.get_command_result(command, fullenv)
+
+				if os.environ.has_key("ANDROID_BUILD_TOP") == True and platform.system() == 'Linux':
+					os.remove(writepath + "/piglit_" +self.command_name+ "_host.sh")
+					os.remove(writepath + "/piglit_" +self.command_name+ "_android.sh")
 
 				# https://bugzilla.gnome.org/show_bug.cgi?id=680214 is
 				# affecting many developers.  If we catch it
@@ -204,8 +219,84 @@ class ExecTest(Test):
 class PlainExecTest(ExecTest):
 	def __init__(self, command):
 		ExecTest.__init__(self, command)
-		# Prepend testBinDir to the path.
-		self.command[0] = testBinDir + self.command[0]
+		if os.environ.has_key("ANDROID_BUILD_TOP") == True and platform.system() == 'Linux':
+			writepath = os.environ['HOME']
+			self.command_name = command[0]
+			dashloc = command[0].find('-')
+
+			if dashloc != -1:
+				foldername = command[0][0:dashloc]
+			else:
+				foldername = command[0]
+
+			self.sh_script_remote = \
+				("#!/system/bin/sh\n" + \
+				"export PIGLIT_PLATFORM=android\n" + \
+				"export PIGLIT_SOURCE_DIR=/data\n" + \
+				"chmod 777 /system/bin/{command}\n" + \
+				"/system/bin/{command} {param} 2> /data/piglittext_{command}.log\n" + \
+				"echo $? > /data/piglitreturncode_{command}.log\n" + \
+				"rm /system/bin/{command}\n").format(command=command[0], param=' '.join(command[1:]))
+
+			self.sh_script_host = \
+				("#!/bin/bash\n" + \
+				"which adb &>/dev/null\n" + \
+				"\n" + \
+				"if [ $? == 1 ] ; then\n" + \
+				"    echo \"no adb\" 1>&2\n" + \
+				"    return 1\n" + \
+				"    fi\n" + \
+				"\n" + \
+				"adb remount &>/dev/null\n" + \
+				"\n" + \
+				"for i in $*; do\n" + \
+				"		if [[ \"$i\" == */lib/* ]]; then\n" + \
+				"				 adb push $i /system/lib &>/dev/null\n" + \
+				"		else\n" + \
+				"				 adb push $i /system/bin &>/dev/null\n" + \
+				"		fi\n" + \
+				"done\n" + \
+				"\n" + \
+				"adb shell \"if [ ! -d \\\"/data/tests\\\" ]; then mkdir /data/tests; fi\" &>/dev/null\n" + \
+				"adb shell \"if [ ! -d \\\"/data/tests/spec\\\" ]; then mkdir /data/tests/spec; fi\" &>/dev/null\n" + \
+				"\n" + \
+				"adb push {bindir}../tests/spec/{testdir} /data/tests/spec/{testdir} &>/dev/null\n" + \
+				"\n" + \
+				"adb shell source /system/bin/piglit_{command}_android.sh\n" + \
+				"adb shell rm /system/bin/piglit_{command}_android.sh\n" + \
+				"\n" + \
+				"adb pull /data/piglittext_{command}.log /tmp &>/dev/null\n" + \
+				"adb shell rm /data/piglittext_{command}.log\n" + \
+				"adb pull /data/piglitreturncode_{command}.log /tmp &>/dev/null\n" + \
+				"adb shell rm /data/piglitreturncode_{command}.log\n" + \
+				"\n" + \
+				"grep 'PIGLIT:' /tmp/piglittext_{command}.log 1>&2\n" + \
+				"returncode=$(</tmp/piglitreturncode_{command}.log)\n" + \
+				"rm /tmp/piglittext_{command}.log\n" + \
+				"rm /tmp/piglitreturncode_{command}.log\n" + \
+				"return $returncode\n").format(command=self.command_name, testdir=foldername, bindir=testBinDir)
+
+			temp_command = ['/bin/bash', \
+				'-c', \
+				'source ' + writepath + '/piglit_{command}_host.sh'.format(command=self.command_name), \
+				writepath + '/piglit_{command}_android.sh'.format(command=self.command_name), \
+				writepath + '/piglit_{command}_android.sh'.format(command=self.command_name), \
+				testBinDir + self.command[0], \
+				testBinDir + '../lib/libpiglitutil_gles1.so', \
+				testBinDir + '../lib/libpiglitutil_gles2.so', \
+				testBinDir + '../lib/libpiglitutil.so' ]
+
+			# this is to check if there are additional
+			# files needed to run the test. If such files
+			# found they will also be copied to device.
+			for i in range(1,len(self.command)):
+				if len(self.command[i]) >= 1  and self.command[i][0] != '-':
+					temp_command.append(self.command[i])
+
+			self.command = temp_command
+		else:
+			# Prepend testBinDir to the path.
+			self.command[0] = testBinDir + self.command[0]
 
 	def interpretResult(self, out, returncode, results):
 		outlines = out.split('\n')
