@@ -212,7 +212,6 @@ function emit_test_vectors
 [test]
 clear color 0.5 0.5 0.5 0.5
 clear
-ortho
 
 EOF
 
@@ -288,7 +287,7 @@ EOF
 		echo "uniform int col $((c-1))"
 	    fi
 
-            for r in $rows; do
+      for r in $rows; do
 		if [ "x$value_type" = "xfloat" ]; then
 		    echo "uniform int row $((r-1))"
 		fi
@@ -325,15 +324,28 @@ function emit_fs_wr_test
     echo "# ${cmd}"
     echo
     echo "[require]"
-    echo "GLSL >= ${version}"
+    echo "GLSL ES >= ${version}"
+    echo "GL ES >= 2.0"
     echo
 
     echo "[vertex shader]"
-    echo "void main() { gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex; }"
+    echo "attribute vec4 vertex;"
+    echo "mat4 projection = mat4("
+    echo "    2.0/250.0, 0.0, 0.0, -1.0,"
+    echo "    0.0, 2.0/250.0, 0.0, -1.0,"
+    echo "    0.0, 0.0, -1.0, 0.0,"
+    echo "    0.0, 0.0, 0.0, 1.0);"
+    echo
+    echo "void main()"
+    echo "{"
+    echo "    gl_Position = vertex;"
+    echo "    gl_Position *= projection;"
+    echo "}"
     echo
 
     emit_fs $*
     emit_test_vectors $*
+    echo "clear"
 }
 
 
@@ -347,15 +359,23 @@ function emit_vs_wr_test
     echo "# ${cmd}"
     echo
     echo "[require]"
-    echo "GLSL >= ${version}"
+    echo "GLSL ES >= ${version}"
+    echo "GL ES >= 2.0"
     echo
 
     echo "[vertex shader]"
+    echo "attribute vec4 vertex;"
+    echo "mat4 projection = mat4("
+    echo "    2.0/250.0, 0.0, 0.0, -1.0,"
+    echo "    0.0, 2.0/250.0, 0.0, -1.0,"
+    echo "    0.0, 0.0, -1.0, 0.0,"
+    echo "    0.0, 0.0, 0.0, 1.0);"
     emit_globals $*
 
     echo "void main()"
     echo "{"
-    echo "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"
+    echo "    gl_Position = vertex;"
+    echo "    gl_Position *= projection;"
     echo
 
     emit_set_matrix $*
@@ -378,16 +398,17 @@ function emit_vs_wr_test
     fi
 
     emit_test_vectors $*
+    echo "clear"
 }
 
 
 cmd="$0 $*"
 
 if [ "x$1" = "x" ]; then
-    version="1.10"
+    version="1.00"
 else
     case "$1" in
-	1.[12]0) version="$1";;
+	1.[0]0) version="$1";;
 	*)
 	    echo "Bogus GLSL version \"$1\" specified."
 	    exit 1

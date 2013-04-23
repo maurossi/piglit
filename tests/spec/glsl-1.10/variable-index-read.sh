@@ -164,11 +164,18 @@ function emit_vs
     fi
 
     echo "[vertex shader]"
+    echo "attribute vec4 vertex;"
+    echo "mat4 projection = mat4("
+    echo "    2.0/250.0, 0.0, 0.0, -1.0,"
+    echo "    0.0, 2.0/250.0, 0.0, -1.0,"
+    echo "    0.0, 0.0, -1.0, 0.0,"
+    echo "    0.0, 0.0, 0.0, 1.0);"
     emit_globals $*
 
     echo "void main()"
     echo "{"
-    echo "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"
+    echo "    gl_Position = vertex;"
+    echo "    gl_Position *= projection;"
 
     # Only emit the code to set the matrix if the vertex shader is generating
     # varyings for a fragment shader or the matrix is in local storage and the
@@ -287,7 +294,6 @@ function emit_test_vectors
 [test]
 clear color 0.5 0.5 0.5 0.5
 clear
-ortho
 
 EOF
 
@@ -375,7 +381,8 @@ function emit_fs_rd_test
     echo "# ${cmd}"
     echo
     echo "[require]"
-    echo "GLSL >= $version"
+    echo "GLSL ES >= $version"
+    echo "GL ES >= 2.0"
     echo
 
     emit_vs $* 0
@@ -393,7 +400,8 @@ function emit_vs_rd_test
     echo "# ${cmd}"
     echo
     echo "[require]"
-    echo "GLSL >= $version"
+    echo "GLSL ES >= $version"
+    echo "GL ES >= 2.0"
     echo
 
     emit_vs $* 1
@@ -405,10 +413,10 @@ function emit_vs_rd_test
 cmd="$0 $*"
 
 if [ "x$1" = "x" ]; then
-    version="1.10"
+    version="1.00"
 else
     case "$1" in
-	1.[12]0) version="$1";;
+	1.00) version="$1";;
 	*)
 	    echo "Bogus GLSL version \"$1\" specified."
 	    exit 1
