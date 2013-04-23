@@ -27,5 +27,6 @@ define $(module_name)_etc_add_executable
     include $(BUILD_EXECUTABLE)
 endef
 
-test_names := invalid-es3-queries minmax
+test_names := invalid-es3-queries minmax glsl-fs-pointcoord multiple-shader-objects 
+
 $(foreach item,$(test_names),$(eval $(call $(module_name)_etc_add_executable, $(item))))
