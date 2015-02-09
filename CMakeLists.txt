@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
+if(POLICY CMP0022)
+  cmake_policy(SET CMP0022 OLD)
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 INCLUDE (CheckCCompilerFlag)
