@@ -10,7 +10,7 @@ piglit_c_includes := $(piglit_top)/tests/util \
 	bionic \
 	$(piglit_top)/src \
 	external/waffle/include/waffle \
-	external/mesa3d/include \
+	external/mesa/include \
 
 piglit_c_flags := -DPIGLIT_USE_WAFFLE -DPIGLIT_USE_OPENGL_ES2 -DPIGLIT_HAS_ANDROID
 

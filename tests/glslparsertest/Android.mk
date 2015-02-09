@@ -8,7 +8,7 @@ piglit_c_includes := $(piglit_top)/tests/util \
 	bionic \
 	$(piglit_top)/src \
 	external/waffle/include/waffle \
-	external/mesa3d/include \
+	external/mesa/include \
 
 include $(CLEAR_VARS)
 LOCAL_SHARED_LIBRARIES := libGLESv2 libwaffle-1 libpiglitutil_gles2
