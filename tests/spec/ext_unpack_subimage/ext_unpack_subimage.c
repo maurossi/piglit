@@ -28,6 +28,10 @@
  * Test GL_EXT_unpack_subimage.
  */
 
+#define GL_UNPACK_ROW_LENGTH		0x0CF2
+#define GL_UNPACK_SKIP_PIXELS		0x0CF4
+#define GL_UNPACK_SKIP_ROWS		0x0CF3
+
 #include <EGL/egl.h>
 
 #include "piglit-util-gl-common.h"
